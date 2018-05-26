@@ -111,3 +111,27 @@ class Artist:
         self.num_tracks = 0
         self.albums = []
         self.num_albums = 0
+
+    def add(self, obj):
+        if isinstance(obj, Song):
+            self.num_tracks += 1
+            self.tracks.append(obj)
+
+        if isinstance(obj, Album):
+            self.num_albums += 1
+            self.albums.append(obj)
+
+    def pprint(self, verbose=False):
+        _str = 'Artist (\n'
+
+        for key in dir(self):
+            attr = getattr(self, key)
+            if not key.startswith('__') and not callable(attr):
+                if not verbose and isinstance(attr, bytes):
+                    _str += '       {}={},\n'.format(key,
+                                                     attr.decode('utf-8')[0:100] + '...')
+                else:
+                    _str += '       {}={},\n'.format(key, attr)
+        _str += ')'
+
+        return _str

@@ -6,9 +6,17 @@ import mutagen
 from watchdog.observers import Observer
 from fshandler import FSHandler
 from util import is_audio_file
-from models import Song, Album, Folder
+from models import Song, Album, Artist, Folder
 
 album_map = {}
+artist_map = {}
+
+
+def put_album_in_artist(album):
+    if album.artist.lower() not in artist_map:
+        artist = Artist(album.artist)
+        artist.add(album)
+        artist_map[album.artist.lower()] = artist
 
 
 def put_song_in_album(song):
@@ -23,6 +31,18 @@ def put_song_in_album(song):
     else:
         album = album_map[song.album_hash()]
         album.add(song)
+
+    put_album_in_artist(album)
+
+
+def put_song_in_artist(song):
+    if song.artist.lower() not in artist_map:
+        artist = Artist(song.artist)
+        artist.add(song)
+        artist_map[song.artist.lower()] = artist
+    else:
+        artist = artist_map[song.artist.lower()]
+        artist.add(song)
 
 
 def scan_directory(dirname):
@@ -49,6 +69,7 @@ def scan_directory(dirname):
                     **metadata)
 
                 put_song_in_album(song)
+                put_song_in_artist(song)
                 folder.add(song)
 
                 # print(song.pprint(verbose=True))
@@ -60,6 +81,9 @@ def scan_directory(dirname):
 
     for key, album in album_map.items():
         print(album.pprint())
+
+    for key, artist in artist_map.items():
+        print(artist.pprint())
 
 
 if __name__ == "__main__":
