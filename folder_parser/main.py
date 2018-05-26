@@ -10,15 +10,20 @@ from models import Song, Album, Folder
 
 album_map = {}
 
+
 def put_song_in_album(song):
     if song.album_hash() not in album_map:
         album = Album(song.album, song.artist)
         album.add(song)
-        album.add(getattr(song, 'APIC:'))
+        try:
+            album.add(getattr(song, 'APIC:'))
+        except AttributeError:
+            pass
         album_map[song.album_hash()] = album
     else:
         album = album_map[song.album_hash()]
         album.add(song)
+
 
 def scan_directory(dirname):
     for root, subdirs, files in os.walk(dirname):
@@ -32,7 +37,7 @@ def scan_directory(dirname):
                 metadata = {}
                 for key in metadata_file.keys():
                     metadata[key] = metadata_file.get(key)
-                
+
                 song = Song(
                     title=metadata_file.get('TIT2') or file,
                     path=filepath,
@@ -46,13 +51,13 @@ def scan_directory(dirname):
                 put_song_in_album(song)
                 folder.add(song)
 
-                print(song.pprint(verbose=True))
-                print('\n')
-        
+                # print(song.pprint(verbose=True))
+                # print('\n')
+
         if folder.num_tracks != 0:
             print(folder.pprint())
             print('\n')
-    
+
     for key, album in album_map.items():
         print(album.pprint())
 
