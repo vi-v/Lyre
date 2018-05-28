@@ -65,7 +65,6 @@ def scan_directory(dirname):
                     duration=metadata_file.info.length,
                     bitrate=metadata_file.info.bitrate,
                     sample_rate=metadata_file.info.sample_rate,
-                    encoder_settings=metadata_file.info.encoder_settings,
                     **metadata)
 
                 put_song_in_album(song)
@@ -81,6 +80,8 @@ def scan_directory(dirname):
 
     for key, album in album_map.items():
         print(album.pprint())
+        for song in album.tracks:
+            print(song.pprint())
 
     for key, artist in artist_map.items():
         print(artist.pprint())
