@@ -59,10 +59,7 @@ class Folder(models.Model):
 
     def add(self, item):
         if isinstance(item, Song):
-            self.num_tracks += 1
-            ids = json.loads(self.track_ids)
-            ids.append(item._id)
-            self.track_ids = json.dumps(ids)
+            print("TODO: Add song")
 
         self.save()
 
@@ -108,7 +105,7 @@ class Song(models.Model):
     WXXX = models.CharField(max_length=200, blank=True, default='')
 
     def album_hash(self):
-        _str = self.album_name.lower().strip() + self.artist_name.lower().strip()
+        _str = self.album.name.lower().strip() + self.artist.name.lower().strip()
         return hashlib.md5(str.encode(_str)).hexdigest()
 
     @staticmethod
