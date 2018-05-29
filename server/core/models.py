@@ -82,7 +82,8 @@ class Song(models.Model):
     duration = models.FloatField(default=0)
     start_time = models.FloatField(default=0)
     end_time = models.FloatField(default=0)
-    bitrate = models.FloatField(blank=True)
+    bitrate = models.FloatField(default=0, blank=True)
+    sample_rate = models.FloatField(default=0, blank=True)
     artist = models.ForeignKey(
         Artist, on_delete=models.CASCADE, default=0, related_name='songs')
     album = models.ForeignKey(

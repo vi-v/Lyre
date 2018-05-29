@@ -13,11 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import sys
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from rest_framework import routers
 from core import views
+from library_builder import parser
+
+if 'runserver' in sys.argv:
+    parser.scan_directory('/Users/vishnuvi/Music')
 
 router = routers.DefaultRouter()
 router.register(r'albums', views.AlbumViewSet)

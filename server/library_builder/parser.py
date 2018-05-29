@@ -1,39 +1,66 @@
 import os
 import mutagen
-from core.models import Song, Album, Artist, Folder
 from watchdog.observers import Observer
+from tqdm import tqdm
+from django.core.exceptions import ObjectDoesNotExist
+from core.models import Song, Album, Artist, Folder
 from library_builder.fshandler import FSHandler
 from library_builder.util import is_audio_file
 
+
 def scan_directory(dirname):
-	for root, subdirs, files in os.walk(dirname):
+	for root, subdirs, files in os.walk(os.path.abspath(dirname)):
 		folder = Folder(
 			path=root
 		)
 
 		for file in files:
 			if is_audio_file(file):
+				print(root, file)
 				filepath = os.path.join(root, file)
 				metadata_file = mutagen.File(filepath)
 
 				metadata = {}
-				for key in metadata_file.keys():
-					metadata[key] = metadata_file.get(key)
+				for key in Song.metadata_keys():
+					if key in metadata_file:
+						metadata[key] = str(metadata_file.get(key))
+
+				# Get artist for the song
+				if 'TPE1' in metadata and len(metadata['TPE1']) != 0:
+					try:
+						artist = Artist.objects.get(
+							name__iexact=metadata['TPE1'])
+					except ObjectDoesNotExist:
+						artist = Artist(name=metadata['TPE1'])
+				else:
+					artist = Artist.objects.get(pk=0)
+
+				# Get album for the song
+
+				# Get folder for the song
+				try:
+					folder = Folder.objects.get(path=root)
+				except ObjectDoesNotExist:
+					folder = Folder(path=root)
 
 				song = Song(
-					title=metadata_file.get('TIT2') or file,
+					title=metadata.get('TIT2') or file,
 					path=filepath,
 					duration=metadata_file.info.length,
 					start_time=0.0,
 					end_time=metadata_file.info.length - 0.0,
 					bitrate=metadata_file.info.bitrate,
 					sample_rate=metadata_file.info.sample_rate,
-					**metadata)
+					artist=artist,
+					folder=folder
+					**metadata
+				)
+
+				print(song)
 
 				# put_song_in_album(song)
 				# put_song_in_artist(song)
-				folder.add(song)
+				# folder.add(song)
 
 				# print(song.pprint(verbose=True))
 				# print('\n')
-
