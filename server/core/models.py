@@ -10,8 +10,6 @@ import json
 class Artist(models.Model):
     _id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
-    num_tracks = models.IntegerField(default=0)
-    num_albums = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -20,8 +18,7 @@ class Artist(models.Model):
 class Album(models.Model):
     _id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    num_tracks = models.IntegerField(default=0)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums')
     art = models.CharField(max_length=50000, blank=True, default='')
 
     def add(self, item):
@@ -55,7 +52,6 @@ class Album(models.Model):
 class Folder(models.Model):
     _id = models.AutoField(primary_key=True)
     path = models.CharField(max_length=500)
-    num_tracks = models.IntegerField(default=0)
 
     def add(self, item):
         if isinstance(item, Song):
@@ -86,11 +82,13 @@ class Song(models.Model):
     duration = models.FloatField(default=0)
     start_time = models.FloatField(default=0)
     end_time = models.FloatField(default=0)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, default=0)
+    bitrate = models.FloatField(blank=True)
+    artist = models.ForeignKey(
+        Artist, on_delete=models.CASCADE, default=0, related_name='songs')
     album = models.ForeignKey(
-        Album, on_delete=models.CASCADE, null=True, blank=True)
+        Album, on_delete=models.CASCADE, null=True, blank=True, related_name='songs')
     folder = models.ForeignKey(
-        Folder, on_delete=models.CASCADE, null=True, blank=True)
+        Folder, on_delete=models.CASCADE, null=True, blank=True, related_name='songs')
 
     # Metadata using the ID3v2 standard
     TALB = models.CharField(max_length=200, blank=True, default='')
@@ -145,4 +143,4 @@ class Song(models.Model):
         return _str
 
     def __str__(self):
-        return  self.artist.name + ' - ' + self.title
+        return self.artist.name + ' - ' + self.title
