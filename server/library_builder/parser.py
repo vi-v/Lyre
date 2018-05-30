@@ -1,5 +1,6 @@
 import os
 import mutagen
+import base64
 from watchdog.observers import Observer
 from tqdm import tqdm
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,9 +11,12 @@ from library_builder.util import is_audio_file
 
 def scan_directory(dirname):
 	for root, subdirs, files in os.walk(os.path.abspath(dirname)):
-		folder = Folder(
-			path=root
-		)
+		# Get folder for the song
+		try:
+			folder = Folder.objects.get(path=root)
+		except ObjectDoesNotExist:
+			folder = Folder(path=root)
+			folder.save()
 
 		for file in files:
 			if is_audio_file(file):
@@ -32,16 +36,30 @@ def scan_directory(dirname):
 							name__iexact=metadata['TPE1'])
 					except ObjectDoesNotExist:
 						artist = Artist(name=metadata['TPE1'])
+						artist.save()
 				else:
 					artist = Artist.objects.get(pk=0)
 
 				# Get album for the song
+				if 'TALB' in metadata:
+					album_name = metadata['TALB']
+				else:
+					album_name = '<Unknown Album>'
 
-				# Get folder for the song
 				try:
-					folder = Folder.objects.get(path=root)
+					album = Album.objects.get(
+						name__iexact=album_name,
+						artist__name__iexact=artist.name
+					)
 				except ObjectDoesNotExist:
-					folder = Folder(path=root)
+					album = Album(
+						name=album_name,
+						artist=artist
+					)
+					if 'APIC:' in metadata:
+						apic = metadata['APIC:']
+						album.art = base64.b64encode(apic.data)
+					album.save()
 
 				song = Song(
 					title=metadata.get('TIT2') or file,
@@ -52,15 +70,11 @@ def scan_directory(dirname):
 					bitrate=metadata_file.info.bitrate,
 					sample_rate=metadata_file.info.sample_rate,
 					artist=artist,
-					folder=folder
+					album=album,
+					folder=folder,
 					**metadata
 				)
+				song.save()
 
-				print(song)
-
-				# put_song_in_album(song)
-				# put_song_in_artist(song)
-				# folder.add(song)
-
-				# print(song.pprint(verbose=True))
-				# print('\n')
+		if folder.songs.count() == 0:
+			folder.delete()

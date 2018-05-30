@@ -22,7 +22,7 @@ from core import views
 from library_builder import parser
 
 if 'runserver' in sys.argv:
-    parser.scan_directory('/Users/vishnuvi/Music')
+    parser.scan_directory('/Users/vados/Music')
 
 router = routers.DefaultRouter()
 router.register(r'albums', views.AlbumViewSet)
