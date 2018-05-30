@@ -9,7 +9,12 @@ from library_builder.fshandler import FSHandler
 from library_builder.util import is_audio_file, md5
 
 
-def scan_directory(dirname):
+def scan_directory(dirname, silent=False):
+	scanned_songs = 0
+	scanned_albums = 0
+	scanned_artists = 0
+	scanned_folders = 0
+
 	for root, subdirs, files in os.walk(os.path.abspath(dirname)):
 
 		folder = None
@@ -22,8 +27,8 @@ def scan_directory(dirname):
 				except ObjectDoesNotExist:
 					folder = Folder(path=root)
 					folder.save()
-				
-				print(root, file)
+					scanned_folders += 1
+
 				filepath = os.path.join(root, file)
 				metadata_file = mutagen.File(filepath)
 
@@ -40,6 +45,7 @@ def scan_directory(dirname):
 					except ObjectDoesNotExist:
 						artist = Artist(name=metadata['TPE1'])
 						artist.save()
+						scanned_artists += 1
 				else:
 					artist = Artist.objects.get(pk=0)
 
@@ -59,9 +65,13 @@ def scan_directory(dirname):
 						name=album_name,
 						artist=artist
 					)
-					if 'APIC:' in metadata:
-						apic = metadata['APIC:']
-						album.art = base64.b64encode(apic.data)
+					album.save()
+					scanned_albums += 1
+
+				# Get album art
+				if len(album.art) == 0 and 'APIC:' in metadata_file:
+					apic = metadata_file['APIC:']
+					album.art = base64.b64encode(apic.data).decode('utf-8')
 					album.save()
 
 				song, created = Song.objects.update_or_create(
@@ -78,4 +88,9 @@ def scan_directory(dirname):
 					folder=folder,
 					**metadata
 				)
+				scanned_songs += 1
 
+	if not silent:
+		print('Created {} songs, {} albums, {} artists, and {} folders'
+			  .format(scanned_songs, scanned_albums, scanned_artists, scanned_folders)
+			  )
