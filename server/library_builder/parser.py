@@ -6,20 +6,23 @@ from tqdm import tqdm
 from django.core.exceptions import ObjectDoesNotExist
 from core.models import Song, Album, Artist, Folder
 from library_builder.fshandler import FSHandler
-from library_builder.util import is_audio_file
+from library_builder.util import is_audio_file, md5
 
 
 def scan_directory(dirname):
 	for root, subdirs, files in os.walk(os.path.abspath(dirname)):
-		# Get folder for the song
-		try:
-			folder = Folder.objects.get(path=root)
-		except ObjectDoesNotExist:
-			folder = Folder(path=root)
-			folder.save()
+
+		folder = None
 
 		for file in files:
 			if is_audio_file(file):
+				# Get folder for the song
+				try:
+					folder = Folder.objects.get(path=root)
+				except ObjectDoesNotExist:
+					folder = Folder(path=root)
+					folder.save()
+				
 				print(root, file)
 				filepath = os.path.join(root, file)
 				metadata_file = mutagen.File(filepath)
@@ -61,7 +64,7 @@ def scan_directory(dirname):
 						album.art = base64.b64encode(apic.data)
 					album.save()
 
-				song = Song(
+				song, created = Song.objects.update_or_create(
 					title=metadata.get('TIT2') or file,
 					path=filepath,
 					duration=metadata_file.info.length,
@@ -69,12 +72,10 @@ def scan_directory(dirname):
 					end_time=metadata_file.info.length - 0.0,
 					bitrate=metadata_file.info.bitrate,
 					sample_rate=metadata_file.info.sample_rate,
+					md5=md5(filepath),
 					artist=artist,
 					album=album,
 					folder=folder,
 					**metadata
 				)
-				song.save()
 
-		if folder.songs.count() == 0:
-			folder.delete()
