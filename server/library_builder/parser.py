@@ -15,7 +15,11 @@ def scan_directory(dirname, silent=False):
 	scanned_artists = 0
 	scanned_folders = 0
 
-	for root, subdirs, files in os.walk(os.path.abspath(dirname)):
+	def do_walk(root, subdirs, files, pbar=None):
+		scanned_songs = 0
+		scanned_albums = 0
+		scanned_artists = 0
+		scanned_folders = 0
 
 		folder = None
 
@@ -90,7 +94,34 @@ def scan_directory(dirname, silent=False):
 				)
 				scanned_songs += 1
 
+				if pbar:
+					pbar.update(1)
+
+		return (scanned_songs, scanned_albums, scanned_artists, scanned_folders)
+	
 	if not silent:
+		num_tracks = 0
+
+		print("Scanning library...")
+
+		for root, subdirs, files in os.walk(os.path.abspath(dirname)):
+			for file in files:
+				if is_audio_file(file):
+					num_tracks += 1
+
+		with tqdm(total=num_tracks, unit="files") as pbar:
+			for root, subdirs, files in os.walk(os.path.abspath(dirname)):
+				(_songs, _albums, _artists, _folders) = do_walk(root, subdirs, files, pbar=pbar)
+				scanned_songs += _songs
+				scanned_albums += _albums
+				scanned_artists += _artists
+				scanned_folders += _folders
+
 		print('Created {} songs, {} albums, {} artists, and {} folders'
-			  .format(scanned_songs, scanned_albums, scanned_artists, scanned_folders)
-			  )
+                    .format(scanned_songs, scanned_albums, scanned_artists, scanned_folders)
+        )
+		print()
+	else:
+		for root, subdirs, files in os.walk(os.path.abspath(dirname)):
+			do_walk(root, subdirs, files)
+		
