@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    'graphene_django',
     # 'library_builder.apps.LibraryBuilderConfig',
     'core.apps.CoreConfig',
     'django.contrib.admin',

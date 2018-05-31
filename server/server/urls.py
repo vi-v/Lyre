@@ -17,9 +17,11 @@ import sys
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+from graphene_django.views import GraphQLView
 from rest_framework import routers
 from core import views
 from library_builder import parser
+from server.schema import schema
 
 if 'runserver' in sys.argv:
     parser.scan_directory('/Users/vados/Music')
@@ -32,5 +34,6 @@ router.register(r'folders', views.FolderViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     url(r'^', include(router.urls)),
 ]
