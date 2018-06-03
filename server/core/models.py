@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from mutagen.id3 import APIC
 import hashlib
 import base64
@@ -10,6 +12,8 @@ import json
 class Artist(models.Model):
     _id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
+    num_tracks = models.IntegerField(default=0)
+    num_albums = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -18,7 +22,9 @@ class Artist(models.Model):
 class Album(models.Model):
     _id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums')
+    num_tracks = models.IntegerField(default=0)
+    artist = models.ForeignKey(
+        Artist, on_delete=models.CASCADE, related_name='albums')
     art = models.CharField(max_length=50000, blank=True, default='')
 
     def add(self, item):
@@ -49,9 +55,18 @@ class Album(models.Model):
         return self.artist.name + ' - ' + self.name
 
 
+@receiver(post_save, sender=Album)
+def album_post_save(sender, created, instance, **kwargs):
+    artist = Artist.objects.get(pk=instance.artist.pk)
+    Artist.objects.select_for_update().filter(pk=artist.pk).update(
+        num_albums=artist.albums.count()
+    )
+
+
 class Folder(models.Model):
     _id = models.AutoField(primary_key=True)
     path = models.CharField(max_length=500)
+    num_tracks = models.IntegerField(default=0)
 
     def add(self, item):
         if isinstance(item, Song):
@@ -146,3 +161,22 @@ class Song(models.Model):
 
     def __str__(self):
         return self.artist.name + ' - ' + self.title
+
+
+@receiver(post_save, sender=Song)
+def song_post_save(sender, created, instance, **kwargs):
+    # Update num_tracks of Artist, Album and Folder
+    artist = Artist.objects.get(pk=instance.artist.pk)
+    album = Album.objects.get(pk=instance.album.pk)
+    folder = Folder.objects.get(pk=instance.folder.pk)
+
+    Artist.objects.select_for_update().filter(pk=artist.pk).update(
+        num_tracks=artist.songs.count()
+    )
+    Album.objects.select_for_update().filter(pk=album.pk).update(
+        num_tracks=album.songs.count()
+    )
+    Folder.objects.select_for_update().filter(pk=folder.pk).update(
+        num_tracks=folder.songs.count()
+    )
+    # instance.update()
