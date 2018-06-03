@@ -33,6 +33,7 @@ router.register(r'songs', views.SongViewSet)
 router.register(r'folders', views.FolderViewSet)
 
 urlpatterns = [
+    url(r'^jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     url(r'^', include(router.urls)),
