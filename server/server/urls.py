@@ -21,9 +21,11 @@ from graphene_django.views import GraphQLView
 from rest_framework import routers
 from core.views import AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
 from library_builder import parser
+from media.models import EphemeralEntry
 from server.schema import schema
 
 if 'runserver' in sys.argv:
+    EphemeralEntry.clear_all()
     parser.scan_directory('/Users/vados/Music')
 
 router = routers.DefaultRouter()
