@@ -90,6 +90,8 @@ def scan_directory(dirname, silent=False):
 					artist=artist,
 					album=album,
 					folder=folder,
+					audio_format=file.split('.')[1].lower(),
+					mime_type=metadata_file.mime[0],
 					**metadata
 				)
 				scanned_songs += 1

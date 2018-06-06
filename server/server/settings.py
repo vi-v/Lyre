@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'jet',
     'core.apps.CoreConfig',
+    'media',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
