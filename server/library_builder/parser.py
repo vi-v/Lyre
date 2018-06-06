@@ -77,7 +77,7 @@ def scan_directory(dirname, silent=False):
 					apic = metadata_file['APIC:']
 					album.art = base64.b64encode(apic.data).decode('utf-8')
 					album.save()
-
+				
 				song, created = Song.objects.update_or_create(
 					title=metadata.get('TIT2') or file,
 					path=filepath,
