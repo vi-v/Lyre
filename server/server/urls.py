@@ -39,5 +39,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     path('media/', include('media.urls')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^', include(router.urls)),
 ]
