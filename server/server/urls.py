@@ -17,12 +17,11 @@ import sys
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-from graphene_django.views import GraphQLView
 from rest_framework import routers
-from core.views import AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
+from core.views import DRFAuthenticatedGraphQLView, AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
+from server.schema import schema
 from library_builder import parser
 from media.models import EphemeralEntry
-from server.schema import schema
 
 if 'runserver' in sys.argv:
     EphemeralEntry.clear_all()
@@ -37,7 +36,7 @@ router.register(r'folders', FolderViewSet)
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
-    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    path('graphql/', DRFAuthenticatedGraphQLView.as_view(graphiql=True, schema=schema)),
     path('media/', include('media.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^', include(router.urls)),
