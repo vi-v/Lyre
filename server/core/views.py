@@ -1,8 +1,10 @@
+import rest_framework
 from django.shortcuts import render
+from django.views import View
+from django.http import HttpResponse
 from rest_framework import viewsets
 from core.models import Album, Artist, Song, Folder
 from core.serializers import AlbumSerializer, ArtistSerializer, SongSerializer, FolderSerializer
-import rest_framework
 from graphene_django.views import GraphQLView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes, api_view
@@ -23,6 +25,7 @@ class DRFAuthenticatedGraphQLView(GraphQLView):
         view = api_view(['GET', 'POST'])(view)
         return view
 
+
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
@@ -41,3 +44,9 @@ class SongViewSet(viewsets.ModelViewSet):
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
+
+
+class PlaceholderSongsView(View):
+
+    def get(self, request):
+        return render(request, 'core/songslist.html', {})

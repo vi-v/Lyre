@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from rest_framework import routers
-from core.views import DRFAuthenticatedGraphQLView, AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
+from core.views import DRFAuthenticatedGraphQLView, PlaceholderSongsView, AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
 from server.schema import schema
 from library_builder import parser
 from media.models import EphemeralEntry
@@ -35,9 +35,10 @@ router.register(r'folders', FolderViewSet)
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
+    path('', PlaceholderSongsView.as_view()),
     path('admin/', admin.site.urls),
     path('graphql/', DRFAuthenticatedGraphQLView.as_view(graphiql=True, schema=schema)),
     path('media/', include('media.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^', include(router.urls)),
+    url(r'api/', include(router.urls)),
 ]
