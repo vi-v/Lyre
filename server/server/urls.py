@@ -22,10 +22,12 @@ from core.views import DRFAuthenticatedGraphQLView, PlaceholderSongsView, AlbumV
 from server.schema import schema
 from library_builder import parser
 from media.models import EphemeralEntry
+from media import server as media_server
 
 if 'runserver' in sys.argv:
     EphemeralEntry.clear_all()
     parser.scan_directory('/Users/vados/Music')
+    media_server.start()
 
 router = routers.DefaultRouter()
 router.register(r'albums', AlbumViewSet)

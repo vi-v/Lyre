@@ -25,11 +25,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/core/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="826">
-                  <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+                <state relative-caret-position="842">
+                  <caret line="52" column="69" selection-start-line="52" selection-start-column="69" selection-end-line="52" selection-end-column="69" />
                   <folding>
                     <element signature="e#0#21#0" expanded="true" />
                   </folding>
@@ -40,8 +40,20 @@
           <file leaf-file-name="songslist.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/core/templates/core/songslist.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret column="5" selection-start-column="5" selection-end-column="5" />
+                <state relative-caret-position="761">
+                  <caret line="32" column="82" selection-start-line="32" selection-start-column="82" selection-end-line="32" selection-end-column="82" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="server.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/media/server.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1456">
+                  <caret line="56" column="30" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="30" />
+                  <folding>
+                    <element signature="e#0#16#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -62,31 +74,25 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/core/views.py">
+          <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/media/server.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="598">
-                  <caret line="46" selection-start-line="46" selection-end-line="46" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/core/serializers.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="202">
-                  <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/server/urls.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="722">
-                  <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+                <state relative-caret-position="208">
+                  <caret line="25" column="14" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="14" />
                   <folding>
-                    <element signature="e#630#640#0" expanded="true" />
+                    <element signature="e#0#16#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/media/views.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="618">
+                  <caret line="34" selection-start-line="34" selection-end-line="34" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -109,9 +115,12 @@
         <option value="$PROJECT_DIR$/core/serializers.py" />
         <option value="$PROJECT_DIR$/server/settings.py" />
         <option value="$PROJECT_DIR$/media/urls.py" />
-        <option value="$PROJECT_DIR$/server/urls.py" />
         <option value="$PROJECT_DIR$/core/templates/core/templates/songslist.html.py" />
         <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/server/urls.py" />
+        <option value="$PROJECT_DIR$/media/views.py" />
+        <option value="$PROJECT_DIR$/core/templates/core/songslist.html" />
+        <option value="$PROJECT_DIR$/media/server.py" />
       </list>
     </option>
   </component>
@@ -124,9 +133,9 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="22" />
-    <option name="width" value="1920" />
+    <option name="width" value="960" />
     <option name="height" value="1137" />
   </component>
   <component name="ProjectView">
@@ -182,6 +191,11 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/core/templates/core" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -233,6 +247,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1920" height="1137" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
@@ -241,7 +256,7 @@
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" />
       <window_info anchor="bottom" id="Terminal" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18489583" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1765625" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="SciView" />
@@ -264,13 +279,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
@@ -287,6 +295,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="842">
+          <caret line="52" column="69" selection-start-line="52" selection-start-column="69" selection-end-line="52" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/media/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -297,29 +329,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/urls.py">
+    <entry file="file://$PROJECT_DIR$/core/templates/core/songslist.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+        <state relative-caret-position="761">
+          <caret line="32" column="82" selection-start-line="32" selection-start-column="82" selection-end-line="32" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/media/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
           <folding>
-            <element signature="e#630#640#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/templates/core/songslist.html">
+    <entry file="file://$PROJECT_DIR$/media/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="5" selection-start-column="5" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="826">
-          <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+        <state relative-caret-position="1456">
+          <caret line="56" column="30" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="30" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>

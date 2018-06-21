@@ -49,4 +49,5 @@ class FolderViewSet(viewsets.ModelViewSet):
 class PlaceholderSongsView(View):
 
     def get(self, request):
-        return render(request, 'core/songslist.html', {})
+        songs = Song.objects.all()
+        return render(request, 'core/songslist.html', {'songs': songs})
