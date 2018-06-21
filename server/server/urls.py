@@ -18,16 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from rest_framework import routers
-from core.views import DRFAuthenticatedGraphQLView, PlaceholderSongsView, AlbumViewSet, ArtistViewSet, SongViewSet, FolderViewSet
+from core.views import DRFAuthenticatedGraphQLView, PlaceholderSongsView, AlbumViewSet, ArtistViewSet, SongViewSet, \
+    FolderViewSet
 from server.schema import schema
 from library_builder import parser
 from media.models import EphemeralEntry
-from media import server as media_server
 
 if 'runserver' in sys.argv:
     EphemeralEntry.clear_all()
     parser.scan_directory('/Users/vados/Music')
-    media_server.start()
 
 router = routers.DefaultRouter()
 router.register(r'albums', AlbumViewSet)

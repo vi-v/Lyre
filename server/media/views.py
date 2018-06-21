@@ -1,4 +1,6 @@
 import os
+import re
+import mimetypes
 from uuid import uuid4
 from django.shortcuts import render
 from django.http import StreamingHttpResponse, HttpResponse, Http404
@@ -33,10 +35,37 @@ def stream_song(request, song_key):
         song = entry.song
         entry.delete()
 
-        response = StreamingHttpResponse(
-            (line for line in open(song.path, 'rb')))
-        response['Content-Type'] = song.mime_type
-        response['Content-Length'] = os.path.getsize(song.path)
+        range_header = request.META.get('Range')
+        if not range_header:
+            response = StreamingHttpResponse((line for line in open(song.path, 'rb')))
+            response['Accept-Ranges'] = 'bytes'
+            response['Content-Type'] = song.mime_type
+            response['Content-Length'] = os.path.getsize(song.path)
+            return response
+
+        size = os.path.getsize(song.path)
+        byte1, byte2 = 0, None
+
+        m = re.search('(\d+)-(\d*)', range_header)
+        g = m.groups()
+
+        if g[0]:
+            byte1 = int(g[0])
+        if g[1]:
+            byte2 = int(g[1])
+
+        length = size - byte1
+        if byte2 is not None:
+            length = byte2 - byte1
+
+        with open(song.path, 'rb') as f:
+            f.seek(byte1)
+            data = f.read(length)
+
+        response = HttpResponse(data, content_type=mimetypes.guess_type(song.path)[0])
+        response['Accept-Ranges'] = 'bytes'
+        response['Content-Range'] = 'bytes {0}-{1}/{2}'.format(byte1, byte1 + length - 1, size)
+        response.status_code(206)
         return response
     except FileNotFoundError:
         raise Http404('file does not exist')

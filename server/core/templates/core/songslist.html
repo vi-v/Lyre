@@ -30,7 +30,7 @@
             $(this).click(function () {
                 song_id = $(this).attr('id').slice(4)
                 $.get('/media/song/' + song_id, (data) => {
-                    audio_core=$('#audio_core').attr('src', 'http://localhost:8001/song/'+data)[0]
+                    audio_core=$('#audio_core').attr('src', '/media/song/'+data)[0]
                     audio_core.play()
                 })
             })
