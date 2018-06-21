@@ -5,12 +5,18 @@ from uuid import uuid4
 from django.shortcuts import render
 from django.http import StreamingHttpResponse, HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.settings import api_settings
 from core.models import Song
 from media.models import EphemeralEntry
 
 
 # Create your views here.
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+@authentication_classes(api_settings.DEFAULT_AUTHENTICATION_CLASSES)
 def get_song_key(request, song_id):
     try:
         song = Song.objects.get(pk=song_id)
@@ -25,6 +31,9 @@ def get_song_key(request, song_id):
         raise Http404('song does not exist')
 
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+@authentication_classes(api_settings.DEFAULT_AUTHENTICATION_CLASSES)
 def stream_song(request, song_key):
     try:
         entry = EphemeralEntry.objects.get(key=song_key)
